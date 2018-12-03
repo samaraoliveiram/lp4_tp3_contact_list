@@ -225,5 +225,14 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+    'db_fields' => [
+        'name',
+        'email',
+        'number',
+        'date',
+        'description',
+        'type',
+        'contact_type'
+    ]
 
 ];

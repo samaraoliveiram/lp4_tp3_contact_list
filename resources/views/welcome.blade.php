@@ -1,98 +1,66 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
+       @section('content') 
             <div class="content">
-                <div class="title m-b-md">
-                    Laravel
+                <div class="container">
+                <img src="https://farm5.staticflickr.com/4428/35969238033_22f2dca797_k.jpg" width=100%>
+                <div class="title">
+                    My Contacts
                 </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
-            </div>
-        </div>
-    </body>
-</html>
+            <div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+             <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Number</th>
+            <th scope="col">Birthday</th>
+            <th scope="col">Type</th>
+            <th scope="col">Contact Type</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delet</th>
+            </tr>
+              </thead>
+            <tbody>
+                @foreach ($contacts as $contact)
+                <tr class="table-light">
+                        <td>{{ $contact->name }}</td>
+                        <td>{{ $contact->email }}</td>
+                        <td>{{ $contact->number }}</td>
+                        <td>{{ $contact->date }}</td>
+                        <td>{{ $contact->type }}</td>
+                        <td>{{ $contact->contact_type }}</td>    
+                        <td><a href="{{action('ContactController@edit', $contact['id'])}}" class="btn btn-primary">Edit</button></td>    
+                        <td><form action="{{action('ContactController@destroy', $contact['id'])}}" method="post">
+                             @csrf
+                            <input name="_method" type="hidden" value="DELETE">
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                             </form>
+                        </td>    
+                 </tr>
+                        @endforeach
+                        <tr>
+                            <td>
+        <a href="{{action('ContactController@create')}}" class="btn btn-primary">Insert</a>
+        
+        </td>    
+    </tr>
+        </tbody>
+        
+        </table>
+        <div id="map" style="width:100%;height:500px"></div>
+    </div>
+        <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 8
+        });
+        console.log(document.getElementById('map'));
+      }
+    </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-zCaQ0AN5szdaeWoUOCQWBuLHJuTzjVM&callback=initMap"
+  type="text/javascript"></script>
+        @endsection
